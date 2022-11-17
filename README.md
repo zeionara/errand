@@ -1,5 +1,9 @@
 # errand
 
+<p align="center">
+    <img src="assets/images/logo.png"/>
+</p>
+
 Evaluation of random number generation functions performance
 
 ## Create environment

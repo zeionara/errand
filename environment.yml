@@ -4,23 +4,62 @@ channels:
 dependencies:
   - _libgcc_mutex=0.1=main
   - _openmp_mutex=5.1=1_gnu
+  - astroid=2.11.7=py39h06a4308_0
+  - autopep8=1.5.6=pyhd3eb1b0_0
+  - blas=1.0=mkl
   - ca-certificates=2022.10.11=h06a4308_0
   - certifi=2022.9.24=py39h06a4308_0
   - click=8.0.4=py39h06a4308_0
+  - dill=0.3.6=py39h06a4308_0
+  - flake8=3.9.0=pyhd3eb1b0_0
+  - future=0.18.2=py39h06a4308_1
+  - importlib-metadata=4.11.3=py39h06a4308_0
+  - intel-openmp=2021.4.0=h06a4308_3561
+  - isort=5.9.3=pyhd3eb1b0_0
+  - jedi=0.17.2=py39h06a4308_1
+  - lazy-object-proxy=1.6.0=py39h27cfd23_0
   - ld_impl_linux-64=2.38=h1181459_1
   - libffi=3.3=he6710b0_2
   - libgcc-ng=11.2.0=h1234567_1
   - libgomp=11.2.0=h1234567_1
   - libstdcxx-ng=11.2.0=h1234567_1
+  - mccabe=0.6.1=py39h06a4308_2
+  - mkl=2021.4.0=h06a4308_640
+  - mkl-service=2.4.0=py39h7f8727e_0
+  - mkl_fft=1.3.1=py39hd3c417c_0
+  - mkl_random=1.2.2=py39h51133e4_0
   - ncurses=6.3=h5eee18b_3
+  - numpy=1.23.4=py39h14f4228_0
+  - numpy-base=1.23.4=py39h31eccc5_0
   - openssl=1.1.1s=h7f8727e_0
+  - parso=0.7.0=py_0
   - pip=22.2.2=py39h06a4308_0
+  - platformdirs=2.5.2=py39h06a4308_0
+  - pluggy=1.0.0=py39h06a4308_1
+  - pycodestyle=2.6.0=pyhd3eb1b0_0
+  - pydocstyle=6.1.1=pyhd3eb1b0_0
+  - pyflakes=2.2.0=pyhd3eb1b0_0
+  - pylint=2.14.5=py39h06a4308_0
   - python=3.9.15=haa1d7c7_0
+  - python-jsonrpc-server=0.4.0=py_0
+  - python-language-server=0.36.2=pyhd3eb1b0_0
   - readline=8.2=h5eee18b_0
+  - rope=0.22.0=pyhd3eb1b0_0
   - setuptools=65.5.0=py39h06a4308_0
+  - six=1.16.0=pyhd3eb1b0_1
+  - snowballstemmer=2.2.0=pyhd3eb1b0_0
   - sqlite=3.39.3=h5082296_0
   - tk=8.6.12=h1ccaba5_0
+  - toml=0.10.2=pyhd3eb1b0_0
+  - tomli=2.0.1=py39h06a4308_0
+  - tomlkit=0.11.1=py39h06a4308_0
+  - typing-extensions=4.3.0=py39h06a4308_0
+  - typing_extensions=4.3.0=py39h06a4308_0
   - tzdata=2022f=h04d1e81_0
+  - ujson=5.4.0=py39h6a678d5_0
   - wheel=0.37.1=pyhd3eb1b0_0
+  - wrapt=1.14.1=py39h5eee18b_0
   - xz=5.2.6=h5eee18b_0
+  - yapf=0.31.0=pyhd3eb1b0_0
+  - zipp=3.8.0=py39h06a4308_0
   - zlib=1.2.13=h5eee18b_0

@@ -7,7 +7,7 @@ class TestDefaultLoopingLemmatizer(TestCase):
     def setUp(self):
         self.adapter = RandeerAdapter(RANDEER_LIBRARY_PATH)
 
-    def test_two_numbers(self):
+    def test_randomizer_recreation(self):
         self.assertEqual(len(set(self.adapter.sample_by_looping_randomizer(1, 5, (2, 4)) for _ in range(100))), 1)
 
     def test_in_interval_excluding_task(self):
@@ -15,7 +15,7 @@ class TestDefaultLoopingLemmatizer(TestCase):
         max_ = 5
         excluded = (2, 4)
 
-        randomizer_id = 17
+        randomizer_id = 16
 
         self.adapter.init(randomizer_id, 17, RandomizerType.DEFAULT_LOOPING)
         self.adapter.init_in_interval_excluding_task(randomizer_id, min_, max_, excluded)

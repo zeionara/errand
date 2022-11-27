@@ -12,7 +12,7 @@ class Parameter:
         self.excluded = excluded
 
     def __str__(self):
-        return f'{self.min_} {self.max_} {self.excluded}'
+        return f'min={self.min_} max={self.max_} excluded={",".join(map(str, self.excluded))}'
 
 
 class ParameterGrid:

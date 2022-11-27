@@ -65,7 +65,11 @@ def randomize(seed: int):
     # print(experiment.run(10000, 10, 20, (11, 12), 10, (17, 19, 21, 14)))
 
     # evaluator.evaluate(n = 100000, min_ = 10, max_ = 20, excluded = (11, 12))
-    evaluator.evaluate(n = 10000, grid = grid).to_csv('assets/evaluation-results.tsv', sep='\t', index = False, float_format = '{:.10f}'.format)
+    df = evaluator.evaluate(n = 1000, grid = grid)
+
+    print(df)
+
+    df.to_csv('assets/evaluation-results.tsv', sep='\t', index = False, float_format = '{:.10f}'.format)
 
     # randeer = RandeerAdapter(RANDEER_LIBRARY_PATH)
     # evaluator = Evaluator()

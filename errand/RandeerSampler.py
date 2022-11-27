@@ -93,13 +93,15 @@ class RandeerSampler(Sampler):
                 if using_objects:
                     if iteration_method == IterationMethod.PYTHON:
                         for _ in range(n):
-                            return self.sample_default_by_looping_using_objects(min_, max_, excluded)
+                            _ = self.sample_default_by_looping_using_objects(min_, max_, excluded)
+                        return
                     if single_init:
                         return self.sample_default_n_by_looping_without_init_using_objects(n, min_, max_, excluded)
                     return self.sample_default_n_by_looping_with_init_using_objects(n, min_, max_, excluded)
                 if iteration_method == IterationMethod.PYTHON:
                     for _ in range(n):
-                        return self.sample_default_by_looping(min_, max_, excluded)
+                        _ = self.sample_default_by_looping(min_, max_, excluded)
+                    return
                 if single_init:
                     return self.sample_default_n_by_looping_without_init(n, min_, max_, excluded)
                 return self.sample_default_n_by_looping_with_init(n, min_, max_, excluded)
@@ -110,7 +112,8 @@ class RandeerSampler(Sampler):
                     raise ValueError('Cannot use objects when sampling with lcg randomizer')
                 if iteration_method == IterationMethod.PYTHON:
                     for _ in range(n):
-                        return self.sample_lcg_by_looping(min_, max_, excluded)
+                        _ = self.sample_lcg_by_looping(min_, max_, excluded)
+                    return
                 if single_init:
                     return self.sample_lcg_n_by_looping_without_init(n, min_, max_, excluded)
                 return self.sample_lcg_n_by_looping_with_init(n, min_, max_, excluded)

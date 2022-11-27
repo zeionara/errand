@@ -7,6 +7,7 @@ import numpy as np
 
 
 from .Sampler import Sampler
+from .Unit import Unit
 
 
 class Experiment(ABC):
@@ -14,7 +15,7 @@ class Experiment(ABC):
         self.sampler = sampler
         self.label = label
 
-    def run_for_one_seed(self, n_repetitions: int, run: callable, seed: int = None):
+    def run_for_one_seed(self, n_repetitions: int, run: callable, seed: int = None, unit: Unit = Unit.SECOND):
         measured_times = []
 
         if seed is not None:
@@ -25,7 +26,7 @@ class Experiment(ABC):
 
             run()
 
-            measured_times.append(time.time() - start_time)
+            measured_times.append((time.time() - start_time) * unit.scaling_coefficient)
 
         return measured_times
 
@@ -33,12 +34,12 @@ class Experiment(ABC):
     def sample(self, n: int, min_: int, max_: int, excluded: Tuple[int]):
         pass
 
-    def run(self, n: int, min_: int, max_: int, excluded: Tuple[int], nRepetitions: int = 1, seeds: Tuple[int] = None):
+    def run(self, n: int, min_: int, max_: int, excluded: Tuple[int], nRepetitions: int = 1, seeds: Tuple[int] = None, unit: Unit = Unit.SECOND):
         if seeds is None:
-            return np.array([self.run_for_one_seed(nRepetitions, lambda: self.sample(n, min_, max_, excluded))])
+            return np.array([self.run_for_one_seed(nRepetitions, lambda: self.sample(n, min_, max_, excluded), None, unit)])
         return np.array(
             [
-                self.run_for_one_seed(nRepetitions, lambda: self.sample(n, min_, max_, excluded), seed)
+                self.run_for_one_seed(nRepetitions, lambda: self.sample(n, min_, max_, excluded), seed, unit)
                 for seed in seeds
             ]
         )

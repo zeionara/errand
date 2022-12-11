@@ -12,8 +12,11 @@ class PythonSampler(Sampler):
     lcg_increment = 11
     lcg_modulus = 281474976710656
 
-    def __init__(self):
-        self.last_lcg_state = 17
+    def __init__(self, seed: int = None):
+        if seed is not None:
+            self.seed(seed)
+        else:
+            self.last_lcg_state = 17
 
     def _lcg_randint(self, modulus: int):
         self.last_lcg_state = (self.last_lcg_state * self.lcg_multiplier + self.lcg_increment) % self.lcg_modulus

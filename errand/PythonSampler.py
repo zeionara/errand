@@ -62,11 +62,10 @@ class PythonSampler(Sampler):
         while left_bound + 1 < right_bound:
             middle_point = (left_bound + right_bound) // 2
 
-            if sorted_excluded_values[middle_point] - (middle_point + 1) >= sampled_value:
-                # print('-- middle item is greater')
-                right_bound = middle_point
-            else:
+            if sorted_excluded_values[middle_point] - (middle_point + 1) < sampled_value:
                 left_bound = middle_point
+            else:
+                right_bound = middle_point
             # print('-- Updated left bound =', left_bound, '; right bound =', right_bound)
 
         return min_ + sampled_value + left_bound + 1

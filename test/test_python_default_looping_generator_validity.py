@@ -6,7 +6,7 @@ except ModuleNotFoundError:
     from .TestGeneratorValidity import TestGeneratorValidity  # works for 'python -m unittest test ...' command
 
 
-class TestPythonDefaultGeneratorValidity(TestGeneratorValidity):
+class TestPythonDefaultLoopingGeneratorValidity(TestGeneratorValidity):
     abstract = False
 
     def setUp(self):

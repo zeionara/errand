@@ -3,7 +3,7 @@ from unittest import TestCase
 from errand import RandeerSampler, RANDEER_LIBRARY_PATH, RandomizerType
 
 
-class TestDefaultLoopingLemmatizer(TestCase):
+class TestDefaultLoopingRandomizer(TestCase):
     def setUp(self):
         self.adapter = RandeerSampler(RANDEER_LIBRARY_PATH)
 

@@ -14,7 +14,7 @@ from .Sampler import Sampler
 
 
 class RandeerSampler(Sampler):
-    def __init__(self, path: str):
+    def __init__(self, path: str, seed: int = None):
         lib = ctypes.cdll.LoadLibrary(path)
         lib.sample.argtypes = [ctypes.c_int64]
         lib.seed.argtypes = [ctypes.c_int64]
@@ -36,6 +36,9 @@ class RandeerSampler(Sampler):
         lib.next.argtypes = [ctypes.c_int64]
 
         self.lib = lib
+
+        if seed is not None:
+            self.seed(seed)
 
     # core
 

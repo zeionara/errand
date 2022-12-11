@@ -1,11 +1,11 @@
 from unittest import TestCase
 
-from errand import RandeerAdapter, RANDEER_LIBRARY_PATH, RandomizerType
+from errand import RandeerSampler, RANDEER_LIBRARY_PATH, RandomizerType
 
 
 class TestJavaLcgLoopingLemmatizer(TestCase):
     def setUp(self):
-        self.adapter = RandeerAdapter(RANDEER_LIBRARY_PATH)
+        self.adapter = RandeerSampler(RANDEER_LIBRARY_PATH)
 
     def test_in_interval_excluding_task(self):
         min_ = 1

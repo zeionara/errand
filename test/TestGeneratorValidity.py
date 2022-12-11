@@ -83,3 +83,19 @@ class TestGeneratorValidity(TestCase):
         excluded = (2, 3, 3, 3, 4, 6, 6, 7, 10, 10)
 
         self.run_tests(min_, max_, excluded)
+
+    @skip_if_abstract
+    def test_mixed_head_interval(self):
+        min_ = 1
+        max_ = 15
+        excluded = (1, 2, 3, 6, 7, 10)
+
+        self.run_tests(min_, max_, excluded)
+
+    @skip_if_abstract
+    def test_mixed_tail_interval(self):
+        min_ = 1
+        max_ = 15
+        excluded = (7, 8, 9, 11, 12, 15)
+
+        self.run_tests(min_, max_, excluded)

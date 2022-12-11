@@ -29,6 +29,48 @@ class PythonSampler(Sampler):
             if number not in excluded:
                 return number
 
+    def sample_default_by_shifting(self, min_: int, max_: int, excluded: Tuple[int]):
+        sorted_excluded_values = sorted(set(excluded))
+        n_excluded_values = len(sorted_excluded_values)
+
+        min_sampled_value = 0
+        max_sampled_value = max_ - min_
+        sorted_excluded_values = tuple(value - min_ for value in sorted_excluded_values)
+        max_shifted_sampled_value = max_sampled_value - n_excluded_values
+
+        smallest_excluded_value = sorted_excluded_values[0]
+        largest_excluded_value = sorted_excluded_values[-1]
+
+        sampled_value = randint(min_sampled_value, max_shifted_sampled_value)
+
+        # print('-- Sampling from', min_sampled_value, max_shifted_sampled_value, 'excluding', excluded)
+        # print('-- Sampled value', sampled_value)
+
+        if sampled_value < smallest_excluded_value:
+            # print('-- small value')
+            return min_ + sampled_value
+
+        if sampled_value > largest_excluded_value - n_excluded_values:
+            # print('-- large value')
+            return min_ + sampled_value + n_excluded_values
+
+        left_bound = 0
+        right_bound = n_excluded_values - 1
+
+        # print('-- Left bound =', left_bound, '; right bound =', right_bound)
+
+        while left_bound + 1 < right_bound:
+            middle_point = (left_bound + right_bound) // 2
+
+            if sorted_excluded_values[middle_point] - (middle_point + 1) >= sampled_value:
+                # print('-- middle item is greater')
+                right_bound = middle_point
+            else:
+                left_bound = middle_point
+            # print('-- Updated left bound =', left_bound, '; right bound =', right_bound)
+
+        return min_ + sampled_value + left_bound + 1
+
     def sample_lcg_by_looping(self, min_: int, max_: int, excluded: Tuple[int]):
         diff = max_ - min_ + 1
         while True:
@@ -40,6 +82,8 @@ class PythonSampler(Sampler):
         if sampling_approach == SamplingApproach.DEFAULT:
             if sampling_method == SamplingMethod.LOOPING:
                 return self.sample_default_by_looping
+            if sampling_method == SamplingMethod.SHIFTING:
+                return self.sample_default_by_shifting
             raise ValueError(f'Sampling method {sampling_method.value} is not supported for approach {sampling_approach.value}')
         if sampling_approach == SamplingApproach.LCG:
             if sampling_method == SamplingMethod.LOOPING:

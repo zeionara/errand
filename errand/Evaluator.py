@@ -19,7 +19,7 @@ class Evaluator:
     def visualize(self, x: Tuple[int], y: Tuple[float], label: Tuple[str], unit: Unit, xlabels: Tuple[str]):
         sns.set_style('darkgrid')
 
-        plot = sns.lmplot(DataFrame({'x': x, 'y': y, 'experiment label': label}), x = 'x', y = 'y', hue = 'experiment label', order = 3)
+        plot = sns.lmplot(DataFrame({'x': x, 'y': y, 'experiment label': label}), x = 'x', y = 'y', hue = 'experiment label', order = 3, ci = 95)
 
         plt.tight_layout()
         plt.xticks(rotation = 10)
@@ -27,7 +27,9 @@ class Evaluator:
         plot.set(xlabel = 'parameters', ylabel = f'execution time ({unit.value})', title = 'Random number generation time')
         plot.fig.set_size_inches(16, 8)
         # plot.set(yscale = 'log')
-        plot.set(xticklabels = xlabels)
+        # plot.set(xticklabels = xlabels)
+        plot.set(xticks = range(len(xlabels)))
+        plot.set_xticklabels(xlabels)
 
         min_y = min(y)
         max_y = max(y)

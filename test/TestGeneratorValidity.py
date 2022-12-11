@@ -24,11 +24,13 @@ class TestGeneratorValidity(TestCase):
         super().__init__(*args, **kwargs)
 
     def run_tests(self, min_: int, max_: int, excluded: tuple[int], n: int = 1000):
-        n_allowed_values = max_ - min_ + 1 - len(excluded)
+        n_allowed_values = max_ - min_ + 1 - len(set(excluded))
         sampled_values = set()
 
         for _ in range(n):
+            # print('Sampling from', min_, 'to', max_, 'excluding', excluded)
             sampled_value = self.sample(min_, max_, excluded)
+            # print('Sampled', sampled_value)
             self.assertNotIn(sampled_value, excluded, SAMPLED_AN_EXCLUDED_VALUE_MESSAGE)  # Make sure that excluded values are not generated
             sampled_values.add(sampled_value)
 
@@ -53,7 +55,31 @@ class TestGeneratorValidity(TestCase):
     @skip_if_abstract
     def test_two_holes_interval(self):
         min_ = 1
-        max_ = 6
-        excluded = (2, 4, 5)
+        max_ = 7
+        excluded = (2, 4, 6)
+
+        self.run_tests(min_, max_, excluded)
+
+    @skip_if_abstract
+    def test_mixed_interval(self):
+        min_ = 1
+        max_ = 15
+        excluded = (2, 3, 4, 6, 7, 10)
+
+        self.run_tests(min_, max_, excluded)
+
+    @skip_if_abstract
+    def test_unordered(self):
+        min_ = 1
+        max_ = 15
+        excluded = (10, 7, 2, 3, 6, 4)
+
+        self.run_tests(min_, max_, excluded)
+
+    @skip_if_abstract
+    def test_repetitions(self):
+        min_ = 1
+        max_ = 15
+        excluded = (2, 3, 3, 3, 4, 6, 6, 7, 10, 10)
 
         self.run_tests(min_, max_, excluded)

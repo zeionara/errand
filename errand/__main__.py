@@ -67,6 +67,10 @@ def randomize(seed: int):
                 'default looping (python)',
                 SamplingMethod.LOOPING, SamplingApproach.DEFAULT
             ),
+            PythonExperiment(
+                'default shifting (python)',
+                SamplingMethod.SHIFTING, SamplingApproach.DEFAULT
+            ),
             RandeerExperiment(
                 'default looping (c++), iteration in python',
                 RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.PYTHON, single_init = True, using_objects = False

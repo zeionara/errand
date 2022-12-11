@@ -1,25 +1,21 @@
 from functools import wraps
-from abc import abstractmethod
 from unittest import TestCase
 
 SAMPLED_AN_EXCLUDED_VALUE_MESSAGE = "Sampled an excluded value"
+SHOULD_NOT_EXECUTE_ABSTRACT_TESTS_MESSAGE = "Should not execute abstract tests"
 
 
 def skip_if_abstract(test):
     @wraps(test)
     def _skip_if_abstract(self, *args, **kwargs):
         if self.abstract:
-            return self.skipTest("Should not execute abstract tests")
+            return self.skipTest(SHOULD_NOT_EXECUTE_ABSTRACT_TESTS_MESSAGE)
         return test(self, *args, **kwargs)
     return _skip_if_abstract
 
 
 class TestGeneratorValidity(TestCase):
     abstract = True
-
-    # @abstractmethod
-    # def sample(self, min_: int, max_: int, excluded: tuple[int]) -> int:
-    #     pass
 
     def __init__(self, *args, **kwargs):
         self.sampler = None

@@ -61,24 +61,39 @@ def randomize(seed: int):
     #     seeds = (17, 19, 21)
     # )
 
+    # evaluator = Evaluator(
+    #     experiments = (
+    #         PythonExperiment(
+    #             'default looping (python)',
+    #             SamplingMethod.LOOPING, SamplingApproach.DEFAULT
+    #         ),
+    #         PythonExperiment(
+    #             'default shifting (python)',
+    #             SamplingMethod.SHIFTING, SamplingApproach.DEFAULT
+    #         ),
+    #         RandeerExperiment(
+    #             'default looping (c++), iteration in python',
+    #             RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.PYTHON, single_init = True, using_objects = False
+    #         ),
+    #         RandeerExperiment(
+    #             'default looping (c++), iteration in c++',
+    #             RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = False, using_objects = False
+    #         ),
+    #         RandeerExperiment(
+    #             'default looping (c++), iteration in c++, single init',
+    #             RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
+    #         ),
+    #         RandeerExperiment(
+    #             'default looping (c++), iteration in c++, single init, no intermediate objects',
+    #             RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = False
+    #         )
+    #     ),
+    #     n_repetitions = 10,
+    #     seeds = (17, 19, 21)
+    # )
+
     evaluator = Evaluator(
         experiments = (
-            PythonExperiment(
-                'default looping (python)',
-                SamplingMethod.LOOPING, SamplingApproach.DEFAULT
-            ),
-            PythonExperiment(
-                'default shifting (python)',
-                SamplingMethod.SHIFTING, SamplingApproach.DEFAULT
-            ),
-            RandeerExperiment(
-                'default looping (c++), iteration in python',
-                RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.PYTHON, single_init = True, using_objects = False
-            ),
-            RandeerExperiment(
-                'default looping (c++), iteration in c++',
-                RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = False, using_objects = False
-            ),
             RandeerExperiment(
                 'default looping (c++), iteration in c++, single init',
                 RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
@@ -86,6 +101,10 @@ def randomize(seed: int):
             RandeerExperiment(
                 'default looping (c++), iteration in c++, single init, no intermediate objects',
                 RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = False
+            ),
+            RandeerExperiment(
+                'default shifting (c++), iteration in c++, single init',
+                RANDEER_LIBRARY_PATH, SamplingMethod.SHIFTING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
             )
         ),
         n_repetitions = 10,

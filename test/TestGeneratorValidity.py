@@ -34,6 +34,8 @@ class TestGeneratorValidity(TestCase):
             self.assertNotIn(sampled_value, excluded, SAMPLED_AN_EXCLUDED_VALUE_MESSAGE)  # Make sure that excluded values are not generated
             sampled_values.add(sampled_value)
 
+        # print(sampled_values)
+
         assert len(sampled_values) == n_allowed_values  # Make sure that the every allowed value has been generated at least once
 
     @skip_if_abstract

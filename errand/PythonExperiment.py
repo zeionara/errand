@@ -8,10 +8,11 @@ from .Experiment import Experiment
 
 
 class PythonExperiment(Experiment):
-    def __init__(self, label: str, sampling_method: SamplingMethod, sampling_approach: SamplingApproach):
+    def __init__(self, label: str, sampling_method: SamplingMethod, sampling_approach: SamplingApproach, single_init: bool = False):
         self.sampling_method = sampling_method
         self.sampling_approach = sampling_approach
+        self.single_init = single_init
         super().__init__(PythonSampler(), label)
 
     def sample(self, n: int, min_: int, max_: int, excluded: Tuple[int]):
-        return self.sampler.sample(n, min_, max_, excluded, self.sampling_method, self.sampling_approach)
+        return self.sampler.sample(n, min_, max_, excluded, self.sampling_method, self.sampling_approach, self.single_init)

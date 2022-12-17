@@ -37,7 +37,8 @@ class Evaluator:
         yticks = np.arange(min_y, max_y + inc_y, inc_y)
         plot.set(yticks = yticks)
 
-        sns.move_legend(plot, 'upper left', bbox_to_anchor = (1, 1))
+        sns.move_legend(plot, 'upper right')
+        # sns.move_legend(plot, 'upper left', bbox_to_anchor = (1, 1))
 
         return plot
 

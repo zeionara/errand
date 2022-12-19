@@ -38,7 +38,7 @@ def main():
 @option('--cpp', '-c', type = bool, is_flag = True)
 def randomize(seed: int, cpp: bool):
 
-    grid = ParameterGrid.from_range((0, ), (2, 3, 4, 5, 6, 7, 8, 9, 10, 11), ((0, 2), ))
+    grid = ParameterGrid.from_range((0, ), (2, 3, 4, 5, 6, 7, 8, 9, 10, 1000), ((0, 2), ))
 
     # for parameter in grid.parameters:
     #     print(parameter)
@@ -96,21 +96,25 @@ def randomize(seed: int, cpp: bool):
     if cpp:
         evaluator = Evaluator(
             experiments = (
-                RandeerExperiment(
-                    'default looping (c++), iteration in c++, single init',
-                    RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
-                ),
                 # RandeerExperiment(
-                #     'default looping (c++), iteration in c++, multiple inits',
-                #     RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = False, using_objects = True
+                #     'default looping (c++), iteration in c++, single init',
+                #     RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
                 # ),
-                RandeerExperiment(
-                    'default looping (c++), iteration in c++, single init, no intermediate objects',
-                    RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = False
-                ),
+                # # RandeerExperiment(
+                # #     'default looping (c++), iteration in c++, multiple inits',
+                # #     RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = False, using_objects = True
+                # # ),
+                # RandeerExperiment(
+                #     'default looping (c++), iteration in c++, single init, no intermediate objects',
+                #     RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = False
+                # ),
                 RandeerExperiment(
                     'default shifting (c++), iteration in c++, single init',
                     RANDEER_LIBRARY_PATH, SamplingMethod.SHIFTING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
+                ),
+                RandeerExperiment(
+                    'default constrained shifting (c++), iteration in c++, single init',
+                    RANDEER_LIBRARY_PATH, SamplingMethod.CONSTRAINED_SHIFTING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
                 ),
                 # RandeerExperiment(
                 #     'default shifting (c++), iteration in c++, multiple inits',

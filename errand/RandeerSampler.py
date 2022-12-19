@@ -86,6 +86,17 @@ class RandeerSampler(Sampler):
     def sample_default_n_by_shifting_with_init_using_objects(self, n: int, min_: int, max_: int, excluded: Tuple[int]):
         return self.lib.sample_default_n_by_shifting_with_init_using_objects(n, min_, max_, encode_list(excluded), len(excluded))
 
+    # default constrained shifting using objects
+
+    def sample_default_by_constrained_shifting_using_objects(self, min_: int, max_: int, excluded: Tuple[int]):
+        return self.lib.sample_default_by_constrained_shifting_using_objects(min_, max_, encode_list(excluded), len(excluded))
+
+    def sample_default_n_by_constrained_shifting_without_init_using_objects(self, n: int, min_: int, max_: int, excluded: Tuple[int]):
+        return self.lib.sample_default_n_by_constrained_shifting_without_init_using_objects(n, min_, max_, encode_list(excluded), len(excluded))
+
+    def sample_default_n_by_constrained_shifting_with_init_using_objects(self, n: int, min_: int, max_: int, excluded: Tuple[int]):
+        return self.lib.sample_default_n_by_constrained_shifting_with_init_using_objects(n, min_, max_, encode_list(excluded), len(excluded))
+
     # lcg looping
 
     def sample_lcg_by_looping(self, min_: int, max_: int, excluded: Tuple[int]):
@@ -130,6 +141,16 @@ class RandeerSampler(Sampler):
                     if single_init:
                         return self.sample_default_n_by_shifting_without_init_using_objects(n, min_, max_, excluded)
                     return self.sample_default_n_by_shifting_with_init_using_objects(n, min_, max_, excluded)
+                raise ValueError(f'Sampling method {sampling_method.value} for approach {sampling_approach.value} can be done only through intermediate objects')
+            if sampling_method == SamplingMethod.CONSTRAINED_SHIFTING:
+                if using_objects:
+                    if iteration_method == IterationMethod.PYTHON:
+                        for _ in range(n):
+                            _ = self.sample_default_by_constrained_shifting_using_objects(min_, max_, excluded)
+                        return
+                    if single_init:
+                        return self.sample_default_n_by_constrained_shifting_without_init_using_objects(n, min_, max_, excluded)
+                    return self.sample_default_n_by_constrained_shifting_with_init_using_objects(n, min_, max_, excluded)
                 raise ValueError(f'Sampling method {sampling_method.value} for approach {sampling_approach.value} can be done only through intermediate objects')
             raise ValueError(f'Sampling method {sampling_method.value} is not supported for approach {sampling_approach.value}')
         if sampling_approach == SamplingApproach.LCG:

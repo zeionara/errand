@@ -10,6 +10,21 @@ from .ParameterGrid import ParameterGrid
 from .Unit import Unit
 
 
+def reject_outliers(data, m = 2.):
+    d = np.abs(data - np.median(data))
+    mdev = np.median(d)
+    s = d / mdev if mdev else np.zero(len(d))
+    return data[s < m]
+
+
+def drop_outliers(x, y, z):
+    y_median = np.median(y)
+
+    for x_element, y_element, z_element in zip(x, y, z):
+        if np.abs(y_element - y_median) / y_median < 20:
+            yield x_element, y_element, z_element
+
+
 class Evaluator:
     def __init__(self, experiments: Tuple[Experiment], n_repetitions: int = 1, seeds: Tuple[int] = None):
         self.experiments = experiments
@@ -18,6 +33,17 @@ class Evaluator:
 
     def visualize(self, x: Tuple[int], y: Tuple[float], label: Tuple[str], unit: Unit, xlabels: Tuple[str]):
         sns.set_style('darkgrid')
+
+        x, y, label = zip(*drop_outliers(x, y, label))
+
+        # y_median = np.median(y)
+
+        # for x_element, y_element in zip(x, y):
+        #     if np.abs(y_element - y_median) / y_median < 2:
+        #         yield x_element, y_element
+        # dd
+
+        # print(len(x), len(y), len(label))
 
         plot = sns.lmplot(DataFrame({'x': x, 'y': y, 'experiment label': label}), x = 'x', y = 'y', hue = 'experiment label', order = 3, ci = 95)
 
@@ -57,11 +83,13 @@ class Evaluator:
             means = []
             stds = []
             results = []
+            sample_sizes = []
             # x = []
             for parameter in grid:
                 result = experiment.run(n, parameter.min_, parameter.max_, parameter.excluded, self.n_repetitions, self.seeds, unit)
                 means.append(np.mean(result))
                 stds.append(np.std(result))
+                sample_sizes.append(len([x for items in result for x in items]))  # first level of nesting is seed, the second level of nesting is for number of experiments per seed
                 results.append(result)
                 for _ in range(self.n_repetitions if self.seeds is None else len(self.seeds) * self.n_repetitions):
                     x.append(parameter.id)
@@ -76,6 +104,9 @@ class Evaluator:
 
             column_names.append((experiment.label, 'std'))
             data.append(stds)
+
+            column_names.append((experiment.label, 'sample size'))
+            data.append(sample_sizes)
 
             y.extend(n_value := np.reshape(np.array(results), (-1, )).tolist())
             label.extend([experiment.label for _ in range(len(n_value))])

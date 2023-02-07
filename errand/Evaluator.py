@@ -4,25 +4,12 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from pandas import DataFrame, MultiIndex
+# import scipy.stats
 
 from .Experiment import Experiment
 from .ParameterGrid import ParameterGrid
 from .Unit import Unit
-
-
-def reject_outliers(data, m = 2.):
-    d = np.abs(data - np.median(data))
-    mdev = np.median(d)
-    s = d / mdev if mdev else np.zero(len(d))
-    return data[s < m]
-
-
-def drop_outliers(x, y, z):
-    y_median = np.median(y)
-
-    for x_element, y_element, z_element in zip(x, y, z):
-        if np.abs(y_element - y_median) / y_median < 20:
-            yield x_element, y_element, z_element
+from .utils import drop_outliers
 
 
 class Evaluator:

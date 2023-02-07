@@ -1,18 +1,18 @@
 import os
-import time
-from enum import Enum
-import scipy.stats
+# import time
+# from enum import Enum
+# import scipy.stats
 
-from random import randint
-from typing import Tuple
+# from random import randint
+# from typing import Tuple
 
-import ctypes
+# import ctypes
 
 # from statistics import mean
 
 from click import group, argument, option
 
-import numpy as np
+# import numpy as np
 
 from .PythonExperiment import PythonExperiment
 from .RandeerExperiment import RandeerExperiment
@@ -174,27 +174,16 @@ def randomize(seed: int, cpp: bool):
     # evaluator.evaluate(n = 100000, min_ = 10, max_ = 20, excluded = (11, 12))
     df, plot = evaluator.evaluate(n = 1000, grid = grid, unit = Unit.MILLISECOND)
 
-    df = compare_distributions(df, default_looping, default_shifting)
-    mean, std = compare_execution_time(df, default_shifting, default_shifting_cpp)
+    if cpp:
+        df = compare_distributions(df, default_looping, default_shifting)
+        mean, std = compare_execution_time(df, default_looping, default_shifting)
 
-    print(f'\n\nexecution time difference between "{default_shifting}" and "{default_shifting_cpp}": {mean=} {std=}\n\n')
+        print(f'\n\nexecution time difference between "{default_looping}" and "{default_shifting}": {mean=} {std=}\n\n')
+    else:
+        df = compare_distributions(df, default_looping, default_shifting)
+        mean, std = compare_execution_time(df, default_shifting, default_shifting_cpp)
 
-    # numerator = df[(default_looping, 'mean')].sub(df[(default_shifting, 'mean')])
-    # denominator = df[(default_looping, 'std')].pow(2).divide(df[(default_looping, 'sample size')]).add(
-    #     df[(default_shifting, 'std')].pow(2).divide(df[(default_shifting, 'sample size')])
-    # ).pow(0.5)
-
-    # df['t-score'] = numerator.divide(denominator)
-
-    # # df.apply(lambda x: print(x.loc[[default_looping]]), axis = 1)
-    # df['p-value'] = p_value = df.apply(lambda x: scipy.stats.t.sf(abs(x.at['t-score'].iloc[0]), df = int(x.loc[[[default_looping, 'sample size']]].iloc[0]) - 1) * 2, axis = 1)
-    # # print(p_values)
-
-    # df['is significant'] = p_value.le(0.05)
-
-    # shifting_mul = df[(default_shifting, 'mean')].divide(df[(default_shifting_cpp, 'mean')])
-
-    # print(shifting_mul.mean(), shifting_mul.std())
+        print(f'\n\nexecution time difference between "{default_shifting}" and "{default_shifting_cpp}": {mean=} {std=}\n\n')
 
     print(df)
 

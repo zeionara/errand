@@ -1,4 +1,5 @@
 import os
+import random
 # import time
 # from enum import Enum
 # import scipy.stats
@@ -39,8 +40,26 @@ def main():
 @argument('seed', type = str, default = "17")
 @option('--cpp', '-c', type = bool, is_flag = True)
 def randomize(seed: int, cpp: bool):
+    random.seed(seed)
 
-    grid = ParameterGrid.from_range((0, ), (6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1000, 10000), ((0, 1, 2, 4, 5, 6), ))
+    grid = ParameterGrid.from_boundaries(
+        (1, 100, 0.01),
+        (1, 100, 0.1),
+        (1, 100, 0.2),
+        (1, 100, 0.3),
+        (1, 100, 0.4),
+        (1, 100, 0.5),
+        (1, 100, 0.6),
+        (1, 100, 0.7),
+        (1, 100, 0.8),
+        (1, 100, 0.9),
+        (1, 100, 0.99),
+        # (1, 10),
+        # (1, 15),
+        continuous_excluded_interval = False
+    )
+
+    # grid = ParameterGrid.from_range((0, ), (6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1000, 10000), ((0, 1, 2, 4, 5, 6), ))
 
     # for parameter in grid.parameters:
     #     print(parameter)
@@ -95,6 +114,9 @@ def randomize(seed: int, cpp: bool):
     #     seeds = (17, 19, 21)
     # )
 
+    n_repetitions = 10
+    seeds = (17, 19, 21, 22, 23, 24, 25)
+
     if cpp:
         evaluator = Evaluator(
             experiments = (
@@ -106,16 +128,16 @@ def randomize(seed: int, cpp: bool):
                 # #     'default looping (c++), iteration in c++, multiple inits',
                 # #     RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = False, using_objects = True
                 # # ),
-                RandeerExperiment(
-                    default_looping := 'default looping (c++), iteration in c++, single init, no intermediate objects',
-                    RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = False
-                ),
                 # RandeerExperiment(
-                #     'default shifting (c++), iteration in c++, single init',
-                #     RANDEER_LIBRARY_PATH, SamplingMethod.SHIFTING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
+                #     default_looping := 'default looping (c++), iteration in c++, single init, no intermediate objects',
+                #     RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = False
                 # ),
                 RandeerExperiment(
-                    default_shifting := 'default constrained shifting (c++), iteration in c++, single init',
+                    default_shifting := 'default shifting (c++), iteration in c++, single init',
+                    RANDEER_LIBRARY_PATH, SamplingMethod.SHIFTING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
+                ),
+                RandeerExperiment(
+                    default_constrained_shifting := 'default constrained shifting (c++), iteration in c++, single init',
                     RANDEER_LIBRARY_PATH, SamplingMethod.CONSTRAINED_SHIFTING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
                 ),
                 # RandeerExperiment(
@@ -123,8 +145,8 @@ def randomize(seed: int, cpp: bool):
                 #     RANDEER_LIBRARY_PATH, SamplingMethod.SHIFTING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = False, using_objects = True
                 # )
             ),
-            n_repetitions = 10,
-            seeds = (17, 19, 21)
+            n_repetitions = n_repetitions,
+            seeds = seeds
         )
     else:
         evaluator = Evaluator(
@@ -142,9 +164,13 @@ def randomize(seed: int, cpp: bool):
                     SamplingMethod.SHIFTING, SamplingApproach.DEFAULT, single_init = True
                 ),
                 RandeerExperiment(
-                    default_shifting_cpp := 'default constrained shifting (c++), iteration in c++, single init',
-                    RANDEER_LIBRARY_PATH, SamplingMethod.CONSTRAINED_SHIFTING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
-                ),
+                    default_shifting_cpp := 'default shifting (c++), iteration in c++, single init',
+                    RANDEER_LIBRARY_PATH, SamplingMethod.SHIFTING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
+                )
+                # RandeerExperiment(
+                #     default_shifting_cpp := 'default constrained shifting (c++), iteration in c++, single init',
+                #     RANDEER_LIBRARY_PATH, SamplingMethod.CONSTRAINED_SHIFTING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = True
+                # ),
                 # RandeerExperiment(
                 #     'default looping (c++), iteration in python',
                 #     RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.PYTHON, single_init = True, using_objects = False
@@ -162,8 +188,8 @@ def randomize(seed: int, cpp: bool):
                 #     RANDEER_LIBRARY_PATH, SamplingMethod.LOOPING, SamplingApproach.DEFAULT, IterationMethod.CPP, single_init = True, using_objects = False
                 # )
             ),
-            n_repetitions = 10,
-            seeds = (17, 19, 21)
+            n_repetitions = n_repetitions,
+            seeds = seeds
         )
 
     # experiment = PythonExperiment('default looping', SamplingMethod.LOOPING, SamplingApproach.DEFAULT)
@@ -175,10 +201,10 @@ def randomize(seed: int, cpp: bool):
     df, plot = evaluator.evaluate(n = 1000, grid = grid, unit = Unit.MILLISECOND)
 
     if cpp:
-        df = compare_distributions(df, default_looping, default_shifting)
-        mean, std = compare_execution_time(df, default_looping, default_shifting)
+        df = compare_distributions(df, default_shifting, default_constrained_shifting)
+        mean, std = compare_execution_time(df, default_shifting, default_constrained_shifting)
 
-        print(f'\n\nexecution time difference between "{default_looping}" and "{default_shifting}": {mean=} {std=}\n\n')
+        print(f'\n\nexecution time difference between "{default_shifting}" and "{default_constrained_shifting}": {mean=} {std=}\n\n')
     else:
         df = compare_distributions(df, default_looping, default_shifting)
         mean, std = compare_execution_time(df, default_shifting, default_shifting_cpp)

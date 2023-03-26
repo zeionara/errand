@@ -52,7 +52,7 @@ Sampler <|-- RandeerSampler
 
 PythonSampler *-- ShiftingContext
 PythonExperiment *-- PythonSampler
-RandeerExperiment *-- PythonSampler
+RandeerExperiment *-- RandeerSampler
 
 RandeerSampler -- RandomizerType
 RandeerSampler -- IterationMethod

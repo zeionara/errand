@@ -6,6 +6,73 @@
 
 Evaluation of random number generation functions performance
 
+There are basically two types of randomizers which are evaluated in this package. The first one allows to sample random numbers in the interval `[min, max]`, excluding elements which are passed as components of the `excluded` array using a simple loop-based algorithm:
+
+```mermaid
+stateDiagram-v2
+
+generate: Generate number x ∈ [min, max]
+return: return x
+
+[*] --> generate
+
+state if_x_is_bad <<choice>>
+
+generate --> if_x_is_bad
+
+if_x_is_bad --> generate: "x ∈ excluded"
+if_x_is_bad --> return
+
+return --> [*]
+```
+
+An alternative algorithm implements the same thing, but does it without a need to repeat the sampling procedure. The algorithm is much more complex, but essentially it is just choosing the right offset which should be added to the generated x in order to not to obtain a forbidden value. The offset is equal to the number of excluded values before the shifted value of x:
+
+```mermaid
+stateDiagram-v2
+
+generate: Generate number x ∈ [min, max(excluded) - excluded.length]
+return: return x
+return_shifted: return x + excluded.length
+return_complex_shifted: return x + left + 1
+shift_x: left = 0, right = excluded.length - 1, middle = 0
+update_middle: middle = floor(left + right / 2)
+update_left: left = middle
+update_right: right = middle
+
+[*] --> generate
+
+state if_x_is_small <<choice>>
+state if_x_is_large <<choice>>
+state found_bounds <<choice>>
+state check_middle <<choice>>
+
+generate --> if_x_is_small
+
+if_x_is_small --> return: "x < min(excluded)"
+if_x_is_small --> if_x_is_large: "x >= min(excluded)"
+
+if_x_is_large --> return_shifted: "x > max(excluded) - excluded.length"
+if_x_is_large --> shift_x: "x <= max(excluded) - excluded.length"
+
+shift_x --> found_bounds
+
+found_bounds --> update_middle: "left + 1 < right"
+update_middle --> check_middle
+
+check_middle --> update_left: "excluded[middle] - (middle + 1) < x"
+check_middle --> update_right: "excluded[middle] - (middle + 1) >= x"
+
+update_left --> found_bounds
+update_right --> found_bounds
+
+found_bounds --> return_complex_shifted: "left + 1 >= right"
+
+return --> [*]
+return_shifted --> [*]
+return_complex_shifted --> [*]
+```
+
 ## Create environment
 
 Use requirements file to create a `conda` environment:

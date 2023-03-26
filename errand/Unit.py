@@ -4,7 +4,7 @@ from enum import Enum
 class Unit(Enum):
     SECOND = 'second'
     MILLISECOND = 'millisecond'
-    MICROSECOND = 'millisecond'
+    MICROSECOND = 'microsecond'
 
     @property
     def scaling_coefficient(self):
